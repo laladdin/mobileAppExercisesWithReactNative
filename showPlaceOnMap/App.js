@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button, KeyboardAvoidingView, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Button, KeyboardAvoidingView, Alert } from 'react-native';
 import MapView, { Marker} from'react-native-maps';
 
 export default function App() {
@@ -9,9 +9,8 @@ export default function App() {
     latitudeDelta:0.0322,
     longitudeDelta:0.0221});
   const [address, setAddress] = useState('');
+
   const showPlace = () => {
-    const address2 = address.trim()
-    setAddress(address2)
     const url = 'http://www.mapquestapi.com/geocoding/v1/address?key=V0Vjm6hETnOGsE0dUeIfLZIRxzMcATah&location=' + address;
     fetch(url)
     .then((response) => response.json())
