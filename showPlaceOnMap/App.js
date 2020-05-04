@@ -4,18 +4,19 @@ import MapView, { Marker} from'react-native-maps';
 
 export default function App() {
 
+  const [region, setRegion] = useState({latitude:60.200692,
+    longitude:24.934302,
+    latitudeDelta:0.0322,
+    longitudeDelta:0.0221});
   const [address, setAddress] = useState('');
-  const [latitude, setLatitude] = useState(60.200692);
-  const [longitude, setLongitude] = useState(24.934302);
-
   const showPlace = () => {
-    setAddress(address.trim())
+    const address2 = address.trim()
+    setAddress(address2)
     const url = 'http://www.mapquestapi.com/geocoding/v1/address?key=V0Vjm6hETnOGsE0dUeIfLZIRxzMcATah&location=' + address;
     fetch(url)
     .then((response) => response.json())
     .then((responseJson) => {
-      setLatitude(responseJson.results[0].locations[0].latLng.lat);
-      setLongitude(responseJson.results[0].locations[0].latLng.lng);
+      setRegion({...region, latitude: responseJson.results[0].locations[0].latLng.lat, longitude:responseJson.results[0].locations[0].latLng.lng})
     })
     .catch((error) => {
       Alert.alert('Error:', error.message);
@@ -26,17 +27,12 @@ export default function App() {
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
       <View style={styles.mapContainer}>
         <MapView style={styles.map}
-          region={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta:0.0322,
-            longitudeDelta:0.0221,
-          }}
+          region={region}
            >
            <Marker
             coordinate={{
-              latitude: latitude, 
-              longitude: longitude}}
+              latitude: region.latitude, 
+              longitude: region.longitude}}
               title={address}/>
         </MapView>
       </View>
